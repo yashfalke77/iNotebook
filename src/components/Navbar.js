@@ -11,17 +11,15 @@ function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <NavLink activeClassName="active" active className="nav-link" aria-current="page" to="/">Home</NavLink>
-                        </li>
-                    </ul>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
-                            <NavLink activeClassName="active" className="nav-link" aria-current="page" to="/about">About</NavLink>
+                            {/* <NavLink activeClassName="active" className="nav-link" aria-current="page" to="/about">About</NavLink> */}
+                            <Button activeClassName="active" className="nav-link" aria-current="page" component={NavLink} to="/about" variant="text" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif",fontSize: "0.9rem"}}>
+                                About us
+                            </Button>
                         </li>
                         <li>
-                            <Button className="nav-item ms-2" component={NavLink} to="/about" variant="contained" color="secondary" style={{color: "White", textTransform: "none", fontFamily: "'Poppins', sans-serif"}}>
+                            <Button className="nav-item ms-2" component={NavLink} to="/about" variant="outlined" color="secondary" style={{color: "black", textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "0.9rem"}}>
                                 Join us
                             </Button>
                         </li>
