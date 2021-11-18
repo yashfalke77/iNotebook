@@ -12,7 +12,7 @@ module.exports.createUser = async (req, res) => {
     const data = {
         user: { id: resp._id }
     }
-    const authToken = jwt.sign(data, process.env.JWT_SECRET)
+    const authToken = jwt.sign(data, process.env.JWT_KEY)
     res.send({authToken})
 }
 
@@ -23,7 +23,7 @@ module.exports.loginUser = async (req, res) => {
         const data = {
             user: { id: foundUser._id }
         }
-        const authToken = jwt.sign(data, process.env.JWT_SECRET)
+        const authToken = jwt.sign(data, process.env.JWT_KEY)
         res.send({authToken})
     } else {
         return res.status(400).json({err: {user: foundUser}, message: "invalid credentials !!"})
@@ -31,7 +31,7 @@ module.exports.loginUser = async (req, res) => {
 }
 
 module.exports.getUser = async(req, res) => {
-    userId = req.user.id
+    const userId = req.user.id
     const user = await User.findById(userId).select("-password")
     res.send(user)
 }

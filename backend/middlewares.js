@@ -31,7 +31,7 @@ module.exports.fetchUser = (req, res, next) => {
     // Get user from jwt token and add id to req object
     const token = req.header('auth-token')
     if (token) {
-        const data = jwt.verify(token, process.env.JWT_SECRET)
+        const data = jwt.verify(token, process.env.JWT_KEY)
         req.user = data.user
         next()
     } else {

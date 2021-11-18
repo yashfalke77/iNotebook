@@ -1,10 +1,13 @@
 import React from 'react'
-import notes from '../inotebook.png'
+import noteImg from '../inotebook.png'
 import { Link } from "react-router-dom";
 import { Button } from '@mui/material';
 import "../styles/home.css"
+import Notes from './Notes';
 
 function Home() {
+
+
     return (
         <div className="container-fluid" >
             <div className="row">
@@ -13,14 +16,15 @@ function Home() {
                     <p className="ps-5 respo" style={{ fontSize: "1.7rem", fontWeight: "bold" }}>Your notebook on cloud - safe and secure</p>
                     <p className="ps-5 mt-3 respo" style={{ fontSize: "1rem" }}>An online web platform where you can create, edit, upload, delete your notes/information privately and securely without any disturbancee. For more info you can checkout our <Link to="/about">About Page</Link>  </p>
                     <div className="d-flex justify-content-center">
-                    <Button  component={Link} to="/about" variant="contained" color="secondary" style={{ color: "White", textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.3rem" }}>Create New Note</Button>
+                    <Button  component={Link} to="/new" variant="contained" color="secondary" style={{ color: "White", textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.3rem" }}>Create New Note</Button>
                     </div>
                 </div>
                 <div className="col-md-7">
-                    <img className="img-fluid" src={notes} alt="iNotebook" />
+                    <img className="img-fluid" src={noteImg} alt="iNotebook" />
                 </div>
             </div>
 
+            <Notes />
         </div>
     )
 }
