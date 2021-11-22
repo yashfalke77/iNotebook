@@ -1,10 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NoteContext } from '../context/notes/NoteContext';
 import NoteItem from './NoteItem';
 
 function Notes() {
 
-    const { notes } = useContext(NoteContext)
+    const { notes, fetch } = useContext(NoteContext)
+
+    useEffect(() => {
+        fetch()
+    }, [fetch])
 
     return (
         <div className="row ps-5 mt-4 mb-1">

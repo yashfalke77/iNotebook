@@ -3,6 +3,7 @@ if(process.env.NODE_ENV !== 'production'){
 }
 const express = require("express");
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 const authRoute = require('./routes/auth')
 const notesRoute = require('./routes/notes')
@@ -18,8 +19,11 @@ async function main() {
 }
 main().catch(err => console.log(err));
 
+app.use(cors())
+
 // middleware
 app.use(express.json())
+
 
 // Routes
 app.get('/', (req, res) => {

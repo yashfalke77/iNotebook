@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { DispatchContext } from '../context/notes/NoteContext';
+import { NoteContext } from '../context/notes/NoteContext';
 import { TextField, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom";
@@ -8,16 +8,16 @@ import useInputState from "../hooks/useInputState"
 
 function AddNote() {
 
-    const { dispatch } = useContext(DispatchContext)
+    const { add } = useContext(NoteContext)
     const [title, updateTitle, resetTitle] = useInputState("")
     const [description, updateDescription, resetDescription] = useInputState("")
     const [tag, updateTag, resetTag] = useInputState("")
-    const note = { _id: "6196802dc8106674b12f15f0", title, description, tag }
+    const note = { title, description, tag }
     
     const handleSubmit = (evt) => {
         evt.preventDefault()
         console.log(note)
-        dispatch({ type: "add", note: note })
+        add(note)
         resetTitle()
         resetDescription()
         resetTag()
@@ -25,7 +25,6 @@ function AddNote() {
 
     return (
         <div>
-            {/* <button onClick={handleClick}>hello</button> */}
             <div className="container mt-4 addnotes" >
                 <Button className="mb-4" variant="text" color="secondary" startIcon={<ArrowBackIcon />} component={Link} to="/" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif" }}>Home</Button>
                 <h2 style={{ fontWeight: "Bold" }}>Create new Note</h2>

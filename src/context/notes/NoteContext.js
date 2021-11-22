@@ -1,42 +1,49 @@
-import { createContext, useReducer} from "react"
-import reducer from "../../reducers/notesReducer"
+import axios from "axios"
+import { createContext, useState } from "react"
 
 export const NoteContext = createContext()
 
-export const DispatchContext = createContext()
-
 export function NoteProvider(props) {
 
-    const initialNotes = [
-        {
-            _id: "619602e4c8706674b12f15ee",
-            title: "Notessss",
-            description: "Notes is a notetaking app developed by Apple. It is provided on their iOS and macOS operating systems, the latter starting with OS X 10.8 Mountain Lion. It functions as a service for making short text notes, which can be synchronised between devices using Apple's iCloud service.",
-            tag: "#notes #yash #notes-details",
-            user: "6195f4a9cfdc0372307a8fb7",
-            createdAt: "2021-11-18T07:38:12.265Z",
-            updatedAt: "2021-11-18T07:38:12.265Z",
-            __v: 0
-        },
-        {
-            _id: "6196032dc8706674b12f15f0",
-            title: "python",
-            description: "Python is an interpreted high-level general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. Its language constructs as well as its object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects",
-            tag: "#python #yash #py #programming",
-            user: "6195f4a9cfdc0372307a8fb7",
-            createdAt: "2021-11-18T07:39:25.944Z",
-            updatedAt: "2021-11-18T07:39:25.944Z",
-            __v: 0
-        }
-    ]
+    const HOST = "http://localhost:8080"
 
-    const [notes, dispatch] = useReducer(reducer, initialNotes)
+    const initialNotes = []
+
+    const [notes, setNotes] = useState(initialNotes)
+
+    const fetch = async () => {
+        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
+        const resp = await axios.get(`${HOST}/api/notes/`, config)
+        setNotes(resp.data)
+    }
+
+    const add = async (newNotes) => {
+        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
+        const resp = await axios.post(`${HOST}/api/notes/`, newNotes, config)
+        console.log(resp)
+        setNotes([...notes, newNotes])
+    }
+
+    const remove = async(removeId) => {
+        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
+        const resp = await axios.delete(`${HOST}/api/notes/${removeId}`, config)
+        console.log(resp)
+        setNotes(notes.filter(note => (
+            note._id !== removeId
+        )))
+    }
+
+    const edit = async (title, description, tag, id) => {
+        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
+        const resp = await axios.put(`${HOST}/api/notes/${id}`, config)
+        setNotes(notes.map(note => (
+            note.id === id ? { ...note, title, description, tag } : note
+        )))
+    }
 
     return (
-        <NoteContext.Provider value={{ notes }}>
-            <DispatchContext.Provider value={{dispatch}}>
-                {props.children}
-            </DispatchContext.Provider>
+        <NoteContext.Provider value={{ notes, add, remove, edit, fetch }}>
+            {props.children}
         </NoteContext.Provider>
     )
 

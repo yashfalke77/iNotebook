@@ -1,22 +1,68 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from 'react'
 import { IconButton } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditIcon from '@mui/icons-material/Edit';
+import { NoteContext } from '../context/notes/NoteContext';
+import { Dialog, Button, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import useInputState from "../hooks/useInputState"
 
 
 function NoteItem({ note }) {
 
+    const { remove } = useContext(NoteContext)
+
+    const [open, setOpen] = useState(false)
+
+    const [title, updateTitle, resetTitle] = useInputState(note.title)
+    const [description, updateDescription, resetDescription] = useInputState(note.description)
+    const [tag, updateTag, resetTag] = useInputState(note.tag)
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault()
+        console.log(note)
+        // add(note)
+        resetTitle()
+        resetDescription()
+        resetTag()
+    }
+
     return (
         <div className="col-md-4 mt-2 mb-2">
+
+            <Dialog open={open} onClose={handleClose} style={{fontFamily: "'Poppins', sans-serif"}}>
+                <DialogTitle>Edit Note</DialogTitle>
+                <form onSubmit={handleSubmit}>
+                    <DialogContent>
+                        <DialogContentText>
+                            Edit your note. edit the field that you want to edit in note
+                        </DialogContentText>
+                        <TextField autoFocus margin="dense" value={title} onChange={updateTitle} label="Title" type="text" fullWidth variant="standard" />
+                        <TextField autoFocus margin="dense" value={description} onChange={updateDescription} label="Description" type="text" fullWidth variant="standard" />
+                        <TextField autoFocus margin="dense" value={tag} label="tag" onChange={updateTag} type="text" fullWidth variant="standard" />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button type="submit" onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose}>Edit {note.title}</Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
+
             <div className="card">
                 <div className="card-body">
                     <div className="d-flex align-items-center">
                         <h5 className="card-title">{note.title}</h5>
-                        <IconButton className="mb-2 ms-auto" color="secondary">
+                        <IconButton onClick={() => { remove(note._id) }} className="mb-2 ms-auto" color="secondary">
                             <DeleteOutlineOutlinedIcon color="secondary" />
                         </IconButton>
-                        <IconButton className="mb-2" color="secondary">
+                        <IconButton className="mb-2" color="secondary" onClick={handleClickOpen}>
                             <EditIcon color="secondary" />
                         </IconButton>
                     </div>
