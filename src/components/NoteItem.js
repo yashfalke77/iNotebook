@@ -37,11 +37,11 @@ function NoteItem({ note }) {
     return (
         <div className="col-md-4 mt-2 mb-2">
 
-            <Dialog open={open} onClose={handleClose} style={{fontFamily: "'Poppins', sans-serif"}}>
-                <DialogTitle>Edit Note</DialogTitle>
+            <Dialog open={open} onClose={handleClose} >
+                <DialogTitle style={{fontFamily: "'Poppins', sans-serif", fontWeight: "bold", fontSize: "2rem", paddingBottom: "0rem"}}>Edit Note</DialogTitle>
                 <form onSubmit={handleSubmit}>
-                    <DialogContent>
-                        <DialogContentText>
+                    <DialogContent style={{paddingTop: "0.5rem"}}>
+                        <DialogContentText style={{fontFamily: "'Poppins', sans-serif",  fontSize: "1rem", marginBottom: "0.5rem"}}>
                             Edit your note. edit the field that you want to edit in note
                         </DialogContentText>
                         <TextField autoFocus margin="dense" value={title} onChange={updateTitle} label="Title" type="text" fullWidth variant="standard" />
@@ -49,8 +49,8 @@ function NoteItem({ note }) {
                         <TextField autoFocus margin="dense" value={tag} label="tag" onChange={updateTag} type="text" fullWidth variant="standard" />
                     </DialogContent>
                     <DialogActions>
-                        <Button type="submit" onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleClose}>Edit {note.title}</Button>
+                        <Button variant="outlined" color="secondary"  onClick={handleClose} style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1rem" }}>Cancel</Button>
+                        <Button variant="contained" color="secondary" type="submit" onClick={handleClose} style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1rem" }}>Edit {note.title}</Button>
                     </DialogActions>
                 </form>
             </Dialog>

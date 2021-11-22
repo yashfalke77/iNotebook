@@ -5,6 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom";
 import "../styles/home.css"
 import useInputState from "../hooks/useInputState"
+import Navbar from "./Navbar";
 
 function AddNote() {
 
@@ -25,6 +26,7 @@ function AddNote() {
 
     return (
         <div>
+            <Navbar />
             <div className="container mt-4 addnotes" >
                 <Button className="mb-4" variant="text" color="secondary" startIcon={<ArrowBackIcon />} component={Link} to="/" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif" }}>Home</Button>
                 <h2 style={{ fontWeight: "Bold" }}>Create new Note</h2>
