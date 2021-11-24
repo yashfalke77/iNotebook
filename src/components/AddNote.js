@@ -33,15 +33,15 @@ function AddNote() {
                 <p className="mb-4">Add  a new note with your info / notes</p>
                 <form onSubmit={handleSubmit}>
                     <div className="title mb-4">
-                        <TextField value={title} onChange={updateTitle} id="outlined-basic" color="secondary" label="Title" variant="outlined" fullWidth style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField value={title} onChange={updateTitle} inputProps={{minlength:3}} id="outlined-basic" color="secondary" label="Title" variant="outlined" fullWidth required minLength={3} style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                     </div>
                     <div className="description mb-4">
-                        <TextField value={description} onChange={updateDescription} id="outlined-basic" color="secondary" label="Description" variant="outlined" fullWidth style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField value={description} onChange={updateDescription} inputProps={{minlength:3}} id="outlined-basic" color="secondary" label="Description" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                     </div>
                     <div className="tags mb-4">
-                        <TextField value={tag} onChange={updateTag} id="outlined-basic" color="secondary" label="Tags" variant="outlined" fullWidth />
+                        <TextField value={tag} onChange={updateTag} inputProps={{minlength:3}} id="outlined-basic" color="secondary" label="Tags" required variant="outlined" fullWidth />
                     </div>
-                    <Button type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Add Note</Button>
+                    <Button disabled={title.length < 3 || description.length < 3 || tag.length < 3 } type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Add Note</Button>
                 </form>
             </div>
         </div>

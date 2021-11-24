@@ -11,7 +11,7 @@ export function NoteProvider(props) {
 
     const [notes, setNotes] = useState(initialNotes)
 
-    const fetch = async () => {
+    const getNotes = async () => {
         const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
         const resp = await axios.get(`${HOST}/api/notes/`, config)
         setNotes(resp.data)
@@ -35,14 +35,16 @@ export function NoteProvider(props) {
 
     const edit = async (title, description, tag, id) => {
         const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
-        const resp = await axios.put(`${HOST}/api/notes/${id}`, config)
+        const data = {title, description, tag}
+        const resp = await axios.put(`${HOST}/api/notes/${id}`,data, config)
         setNotes(notes.map(note => (
-            note.id === id ? { ...note, title, description, tag } : note
+            note._id === id ? { ...note, title, description, tag } : note
         )))
+        console.log(resp)
     }
 
     return (
-        <NoteContext.Provider value={{ notes, add, remove, edit, fetch }}>
+        <NoteContext.Provider value={{ notes, add, remove, edit, getNotes}}>
             {props.children}
         </NoteContext.Provider>
     )

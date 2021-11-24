@@ -12,6 +12,7 @@ function useInputState(initialVal) {
         setState("")
     }
 
+
     return [state, handleChange, reset]
 }
 
