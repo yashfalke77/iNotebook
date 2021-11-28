@@ -1,4 +1,3 @@
-import axios from "axios"
 import { createContext, useState } from "react"
 
 export const NoteContext = createContext()
@@ -12,36 +11,61 @@ export function NoteProvider(props) {
     const [notes, setNotes] = useState(initialNotes)
 
     const getNotes = async () => {
-        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
-        const resp = await axios.get(`${HOST}/api/notes/`, config)
-        setNotes(resp.data)
+        const response = await fetch(`${HOST}/api/notes/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token' : localStorage.getItem('token')
+            },
+        })
+        const json = await response.json()
+        setNotes(json)
     }
 
     const add = async (newNotes) => {
-        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
-        const resp = await axios.post(`${HOST}/api/notes/`, newNotes, config)
-        console.log(resp)
+        const response = await fetch(`${HOST}/api/notes/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token' : localStorage.getItem('token')
+            },
+            body: JSON.stringify(newNotes),
+        })
+        const json = await response.json()
         setNotes([...notes, newNotes])
+        console.log(json)
     }
 
-    const remove = async(removeId) => {
-        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
-        const resp = await axios.delete(`${HOST}/api/notes/${removeId}`, config)
-        console.log(resp)
+    const remove = async (removeId) => {
+        const response = await fetch(`${HOST}/api/notes/${removeId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token' : localStorage.getItem('token')
+            },
+        })
+        const json = await response.json()
         setNotes(notes.filter(note => (
             note._id !== removeId
         )))
+        console.log(json)
     }
 
     const edit = async (title, description, tag, id) => {
-        const config = { headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5NWY0YTljZmRjMDM3MjMwN2E4ZmI3In0sImlhdCI6MTYzNzU3MTcyMH0.5jmI_aMwcbQETgTSXUjup-vh8uITQTV8j1tqnGJSWPo' } }
-        const data = {title, description, tag}
-        const resp = await axios.put(`${HOST}/api/notes/${id}`,data, config)
+        const response = await fetch(`${HOST}/api/notes/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token' : localStorage.getItem('token')
+            },
+            body: JSON.stringify({ title, description, tag })
+        })
+        const json = await response.json()
         setNotes(notes.map(note => (
             note._id === id ? { ...note, title, description, tag } : note
         )))
-        console.log(resp)
-    }
+        console.log(json)
+    } 
 
     return (
         <NoteContext.Provider value={{ notes, add, remove, edit, getNotes}}>

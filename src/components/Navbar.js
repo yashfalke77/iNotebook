@@ -1,9 +1,18 @@
 import React from 'react'
 import { NavLink } from "react-router-dom";
 import { Button } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 
 function Navbar() {
+
+    const navigate = useNavigate()
+
+    const handleLogout = (evt) => {
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light " style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px", }}>
             <div className="container-fluid">
@@ -23,16 +32,27 @@ function Navbar() {
                                 About us
                             </Button>
                         </li>
-                        <li className="nav-item">
-                            <Button className="nav-link" aria-current="page" component={NavLink} to="/login" variant="text" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "0.9rem" }}>
-                                Login
-                            </Button>
-                        </li>
-                        <li>
-                            <Button className="nav-item ms-2" component={NavLink} to="/register" variant="outlined" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "0.9rem" }}>
-                                Join us
-                            </Button>
-                        </li>
+                        {
+                            !localStorage.getItem('token') ?
+                                <div className="d-flex">
+                                    <li className="nav-item">
+                                        <Button className="nav-link" aria-current="page" component={NavLink} to="/login" variant="text" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "0.9rem" }}>
+                                            Login
+                                        </Button>
+                                    </li>
+                                    <li>
+                                        <Button className="nav-item ms-2" component={NavLink} to="/register" variant="outlined" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "0.9rem" }}>
+                                            Join us
+                                        </Button>
+                                    </li>
+                                </div> :
+                                <li>
+                                    <Button onClick={handleLogout} className="nav-item ms-2" variant="outlined" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "0.9rem" }}>
+                                        logout
+                                    </Button>
+                                </li>
+
+                        }
                     </ul>
                 </div>
             </div>

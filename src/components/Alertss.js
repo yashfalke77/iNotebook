@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { Alert, Collapse, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { AlertContext } from '../context/AlertContext';
 
-function Alertss({ message }) {
+function Alertss(props) {
 
-    const [open, setOpen] = useState(true);
+    const {alert, open , setOpen} = useContext(AlertContext)
 
     return (
         <div>
-            <Collapse in={open}>
+            {alert && <Collapse in={open}>
                 <Alert action={
                     <IconButton
                         aria-label="close"
@@ -18,10 +19,10 @@ function Alertss({ message }) {
                             setOpen(false);
                         }}>
                         <CloseIcon fontSize="inherit" />
-                    </IconButton>} severity="error">
-                    {message} — check it out!
+                    </IconButton>} severity={alert.type}>
+                   {alert.message} 
                 </Alert>
-            </Collapse>
+            </Collapse>}
         </div>
     )
 }

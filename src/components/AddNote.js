@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { NoteContext } from '../context/notes/NoteContext';
 import { TextField, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/home.css"
 import useInputState from "../hooks/useInputState"
 import Navbar from "./Navbar";
@@ -14,6 +14,7 @@ function AddNote() {
     const [description, updateDescription, resetDescription] = useInputState("")
     const [tag, updateTag, resetTag] = useInputState("")
     const note = { title, description, tag }
+    const navigate = useNavigate()
     
     const handleSubmit = (evt) => {
         evt.preventDefault()
@@ -22,6 +23,7 @@ function AddNote() {
         resetTitle()
         resetDescription()
         resetTag()
+        navigate('/')
     }
 
     return (
@@ -33,13 +35,13 @@ function AddNote() {
                 <p className="mb-4">Add  a new note with your info / notes</p>
                 <form onSubmit={handleSubmit}>
                     <div className="title mb-4">
-                        <TextField value={title} onChange={updateTitle} inputProps={{minlength:3}} id="outlined-basic" color="secondary" label="Title" variant="outlined" fullWidth required minLength={3} style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField value={title} onChange={updateTitle} inputProps={{minLength:3}} id="outlined-basic" color="secondary" label="Title" variant="outlined" fullWidth required minLength={3} style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                     </div>
                     <div className="description mb-4">
-                        <TextField value={description} onChange={updateDescription} inputProps={{minlength:3}} id="outlined-basic" color="secondary" label="Description" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField value={description} onChange={updateDescription} inputProps={{minLength:3}} id="outlined-basic" color="secondary" label="Description" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                     </div>
                     <div className="tags mb-4">
-                        <TextField value={tag} onChange={updateTag} inputProps={{minlength:3}} id="outlined-basic" color="secondary" label="Tags" required variant="outlined" fullWidth />
+                        <TextField value={tag} onChange={updateTag} inputProps={{minLength:3}} id="outlined-basic" color="secondary" label="Tags" required variant="outlined" fullWidth />
                     </div>
                     <Button disabled={title.length < 3 || description.length < 3 || tag.length < 3 } type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Add Note</Button>
                 </form>

@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV !== 'production'){
+if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 const User = require('../models/User')
@@ -13,7 +13,7 @@ module.exports.createUser = async (req, res) => {
         user: { id: resp._id }
     }
     const authToken = jwt.sign(data, process.env.JWT_KEY)
-    res.send({authToken})
+    res.send({ success: true, authToken })
 }
 
 module.exports.loginUser = async (req, res) => {
@@ -24,13 +24,13 @@ module.exports.loginUser = async (req, res) => {
             user: { id: foundUser._id }
         }
         const authToken = jwt.sign(data, process.env.JWT_KEY)
-        res.send({authToken})
+        res.send({ success: true, authToken })
     } else {
-        return res.status(400).json({err: {user: foundUser}, message: "invalid credentials !!"})
+        return res.status(400).json({ success: false, err: { user: foundUser }, message: "invalid credentials !!" })
     }
 }
 
-module.exports.getUser = async(req, res) => {
+module.exports.getUser = async (req, res) => {
     const userId = req.user.id
     const user = await User.findById(userId).select("-password")
     res.send(user)

@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import "../styles/home.css"
 import Notes from './Notes';
 import Navbar from "./Navbar";
+import Alertss from "./Alertss";
 
 function Home() {
 
@@ -12,6 +13,7 @@ function Home() {
     return (
         <>
             <Navbar />
+            <Alertss />
             <div className="container-fluid" >
                 <div className="row">
                     <div className="col-md-5">

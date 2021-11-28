@@ -40,7 +40,7 @@ app.use((err, req, res, next) => {
     if (!err.message) {
         err.message = 'Something went wrong'
     }
-    res.status(statusCode).json({err, message})
+    res.status(statusCode).json({success: false,err, message})
 })
 
 const port = process.env.PORT || 8080
