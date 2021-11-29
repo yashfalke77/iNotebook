@@ -43,20 +43,28 @@ An online web platform where you can create, edit, upload, delete your notes/inf
 ### Project Images
 Home Page
 <img src="./project images/home.png" alt="Logo" >
-<img src="./project images/home1.png" alt="Logo">
+
+All Notes
+<img src="./project images/all notes.png" alt="Logo" >
+
+New Note
+<img src="./project images/new Note.png" alt="Logo" >
+
+edit Note
+<img src="./project images/edit Note.png" alt="Logo" >
 
 Login Page
-<img src="./project images/login.png" alt="Logo" width="80" height="80">
+<img src="./project images/login.png" alt="Logo">
 
 Register Page
-<img src="./project images/register.png" alt="Logo" width="80" height="80">
+<img src="./project images/register.png" alt="Logo">
 
 About Page
-<img src="./project images/about.png" alt="Logo" width="80" height="80">
-<img src="./project images/about1.png" alt="Logo" width="80" height="80">
+<img src="./project images/about.png" alt="Logo">
+<img src="./project images/about1.png" alt="Logo">
 
 404 Page
-<img src="./project images/404 page.png" alt="Logo" width="80" height="80">
+<img src="./project images/404 page.png" alt="Logo">
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
