@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { NoteContext } from '../context/notes/NoteContext';
 import { TextField, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/home.css"
 import useInputState from "../hooks/useInputState"
 import Navbar from "./Navbar";
+import { AlertContext } from '../context/AlertContext';
 
 function AddNote() {
 
@@ -15,6 +16,17 @@ function AddNote() {
     const [tag, updateTag, resetTag] = useInputState("")
     const note = { title, description, tag }
     const navigate = useNavigate()
+    const { showAlert } = useContext(AlertContext)
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            console.log("yoooo")
+        } else {
+            navigate('/login')
+            showAlert("You need to signed in first", "error")
+        }
+        // eslint-disable-next-line
+    }, [])
     
     const handleSubmit = (evt) => {
         evt.preventDefault()
