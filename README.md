@@ -42,7 +42,7 @@ An online web platform where you can create, edit, upload, delete your notes/inf
 
 ### Project Images
 Home Page
-<img src="./project images/home.png" alt="Logo" width="80" height="80">
+<img src="./project images/home.png" alt="Logo" width="280" height="280">
 <img src="./project images/home1.png" alt="Logo" width="80" height="80">
 
 Login Page
