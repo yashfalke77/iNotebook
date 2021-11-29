@@ -1,5 +1,5 @@
 import React from 'react'
-import noteImg from '../inotebook.svg'
+import noteImg from '../images/inotebook.svg'
 import { Link } from "react-router-dom";
 import { Button } from '@mui/material';
 import "../styles/home.css"

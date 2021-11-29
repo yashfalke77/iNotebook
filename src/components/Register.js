@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { TextField, Button, Checkbox, FormControlLabel } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, useNavigate } from "react-router-dom";
-import avataars from "../avataaars.png"
+import avataars from "../images/avataaars.png"
 import useInputState from "../hooks/useInputState"
 import useToggleState from "../hooks/useToggleState"
 import Alertss from "./Alertss";
@@ -55,16 +55,28 @@ function Register() {
                     <p className="mb-4">Use your email to create a new account</p>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <TextField value={username} onChange={setUsername} inputProps={{ minLength: 3 }} color="secondary" label="Username" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                            <TextField value={username} onChange={setUsername} inputProps={{ minLength: 3, maxLength: 25 }} color="secondary" label="Username" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                         </div>
                         <div className="mb-4">
-                            <TextField value={email} onChange={setEmail} type="email" inputProps={{ minLength: 3 }} color="secondary" label="Email" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                            <TextField value={email} onChange={setEmail} type="email" inputProps={{ minLength: 1 }} color="secondary" label="Email" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                         </div>
                         <div className="mb-2">
-                            <TextField type="password" value={password} onChange={setPassword} inputProps={{ minLength: 3 }} color="secondary" label="Password" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                            <TextField type="password"
+                                value={password}
+                                onChange={setPassword}
+                                InputProps={{
+                                    minLength: "5"
+                                }}
+                                // inputProps={{ minLength: 5 }} 
+                                color="secondary"
+                                label="Password"
+                                variant="outlined"
+                                fullWidth
+                                required
+                                style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                         </div>
                         <FormControlLabel className=" mb-2" control={<Checkbox checked={accept} onChange={toggleAccept} color="secondary" />} label="I have read the Terms and Conditions" />
-                        <Button disabled={username.length < 3 || password.length < 3 || email.lenght < 3 || !accept} type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Add Note</Button>
+                        <Button disabled={username.length < 3 || username.length > 25 || password.length < 5 || !accept} type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Register now</Button>
                     </form>
                     <p>Have an account? <Link to="/login" >login</Link> </p>
                 </div>

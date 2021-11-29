@@ -52,12 +52,12 @@ function Login() {
                 <p className="mb-4 d-flex justify-content-center">or login with username and password</p>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <TextField value={username} onChange={updateUsername} inputProps={{ minLength: 1 }} color="secondary" label="Username" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField value={username} onChange={updateUsername} inputProps={{ minLength: 3, maxLength: 25 }} color="secondary" label="Username" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                     </div>
                     <div className="mb-4">
-                        <TextField type="password" value={password} onChange={updatePassword} inputProps={{ minLength: 1 }} color="secondary" label="Password" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField type="password" value={password} onChange={updatePassword} inputProps={{ minLength: 5 }} color="secondary" label="Password" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
                     </div>
-                    <Button disabled={username.length < 1 || password.length < 1} type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Add Note</Button>
+                    <Button disabled={username.length < 3 || password.length < 5 || username.length > 25 } type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Login</Button>
                 </form>
                 <p>Don't have an account? <Link to="/register" >register</Link> </p>
             </div>

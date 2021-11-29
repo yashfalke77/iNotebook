@@ -1,15 +1,17 @@
 import React from 'react'
 import Navbar from "./Navbar";
 import '../styles/about.css';
-import awesome from '../about - awesome.jpeg'
-import login from '../about - awesome.svg'
+import awesome from '../images/about - awesome.jpeg'
+import login from '../images/about - awesome.svg'
 import { Link } from "react-router-dom";
 import { Button } from '@mui/material';
+import Alertss from "./Alertss";
 
 function About() {
     return (
         <div>
             <Navbar />
+            <Alertss />
             <div className="text-white aboutImg text-center">
                 <div className="note-img">
                     <h1 className="display-4">Empowering  Students</h1>

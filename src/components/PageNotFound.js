@@ -1,5 +1,5 @@
 import React from 'react'
-import PageNotFounds from '../404.svg'
+import PageNotFounds from '../images/404.svg'
 import {Button} from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom";

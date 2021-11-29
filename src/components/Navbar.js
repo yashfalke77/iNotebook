@@ -1,16 +1,20 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { NavLink } from "react-router-dom";
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import { AlertContext } from '../context/AlertContext';
 
 
 function Navbar() {
 
     const navigate = useNavigate()
 
+    const { showAlert } = useContext(AlertContext)
+
     const handleLogout = (evt) => {
         localStorage.removeItem('token')
         navigate('/login')
+        showAlert("GoodBye :(", "success")
     }
 
     return (

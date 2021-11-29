@@ -12,8 +12,13 @@ export function AlertProvider(props) {
         setAlert({ message, type })
     }
 
+    const removeAlert = () => {
+        setOpen(false)
+        setAlert(null)
+    }
+
     return (
-        <AlertContext.Provider value={{ showAlert, alert, open, setOpen}}>
+        <AlertContext.Provider value={{ showAlert, alert, open, removeAlert}}>
             {props.children}
         </AlertContext.Provider>
     )

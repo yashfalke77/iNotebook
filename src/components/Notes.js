@@ -1,20 +1,23 @@
 import React, { useContext, useEffect, } from 'react'
 import { NoteContext } from '../context/notes/NoteContext';
 import NoteItem from './NoteItem';
-import empty from '../empty.svg'
+import empty from '../images/empty.svg'
 import { useNavigate } from "react-router-dom";
+import { AlertContext } from '../context/AlertContext';
 
 
 function Notes() {
 
     const { notes, getNotes } = useContext(NoteContext)
     const navigate = useNavigate()
+    const { showAlert } = useContext(AlertContext)
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
             getNotes()
         } else {
-            navigate('/login')
+            navigate('/about')
+            showAlert("You need to signed in first", "error")
         }
         // eslint-disable-next-line
     }, [])

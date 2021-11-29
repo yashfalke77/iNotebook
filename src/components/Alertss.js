@@ -5,7 +5,7 @@ import { AlertContext } from '../context/AlertContext';
 
 function Alertss(props) {
 
-    const {alert, open , setOpen} = useContext(AlertContext)
+    const {alert, open , removeAlert} = useContext(AlertContext)
 
     return (
         <div>
@@ -16,7 +16,7 @@ function Alertss(props) {
                         color="inherit"
                         size="small"
                         onClick={() => {
-                            setOpen(false);
+                            removeAlert()
                         }}>
                         <CloseIcon fontSize="inherit" />
                     </IconButton>} severity={alert.type}>
