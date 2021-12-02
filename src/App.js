@@ -7,7 +7,6 @@ import AddNote from "./components/AddNote";
 import PageNotFound from "./components/PageNotFound";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import FormValidations from "./components/FormValidations";
 
 function App() {
 
@@ -21,7 +20,6 @@ function App() {
             <Route path="/new" index element={<AddNote />} />
             <Route path="/register" index element={<Register />} />
             <Route path="/login" index element={<Login />} />
-            <Route path="/formV" index element={<FormValidations />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </AlertProvider>
