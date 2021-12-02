@@ -1,42 +1,65 @@
-import React, { useContext } from 'react'
-import { TextField, Button } from '@mui/material';
+import React, { useContext, useState } from 'react'
+import { TextField, Button, InputAdornment, InputLabel, OutlinedInput, FormControl, IconButton, FormHelperText } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/home.css"
-import useInputState from "../hooks/useInputState"
 import Alertss from "./Alertss";
 import { AlertContext } from '../context/AlertContext';
+import { useFormik } from 'formik'
+import * as Yup from 'yup';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 
 function Login() {
 
-    const [username, updateUsername, resetUsername] = useInputState("")
-    const [password, updatePassword, resetPassword] = useInputState("")
+    console.log("rerendered this much time")
     const navigate = useNavigate()
     const { showAlert } = useContext(AlertContext)
+    const [showPassword, setShowPassword] = useState(false)
 
-    const handleSubmit = async (evt) => {
-        evt.preventDefault()
-        const response = await fetch("http://localhost:8080/api/auth/login", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        })
-        const json = await response.json()
+    const loginSchema = Yup.object().shape({
+        username: Yup.string().min(3).max(25).required().matches(/^[a-z0-9]+$/i, "Username should contain alphabets and numbers only"),
+        password: Yup.string().required().min(4).matches(/^[a-z0-9]+$/i, "Password should contain alphabets and numbers only")
+    })
 
-        if (json.success) {
-            localStorage.setItem("token", json.authToken)
-            navigate("/")
-            showAlert(`Welcome back ${username}`, "success")
-        } else {
-            showAlert(json.message, "error")
+    const formik = useFormik({
+        initialValues: {
+            username: "",
+            password: ""
+        },
+        validationSchema: loginSchema,
+        onSubmit: async (values) => {
+            const response = await fetch("http://localhost:8080/api/auth/login", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            })
+            const json = await response.json()
+
+            if (json.success) {
+                localStorage.setItem("token", json.authToken)
+                navigate("/")
+                showAlert(`Welcome back ${values.username}`, "success")
+            } else {
+                showAlert(json.message, "error")
+            }
         }
-        resetPassword()
-        resetUsername()
-    }
+    })
+
+    const { errors, touched, handleSubmit, getFieldProps } = formik;
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword)
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     return (
         <div>
@@ -50,14 +73,39 @@ function Login() {
                     <Button size="large" fullWidth className="mb-4" variant="contained" color="error" startIcon={<GoogleIcon />} component={Link} to="/" style={{ textTransform: "none", fontSize: "1.1rem", color: "White", fontFamily: "'Poppins', sans-serif" }}>Login with Google</Button>
                 </div>
                 <p className="mb-4 d-flex justify-content-center">or login with username and password</p>
-                <form onSubmit={handleSubmit}>
+                <form autoComplete="off" noValidate onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <TextField value={username} onChange={updateUsername} inputProps={{ minLength: 3, maxLength: 25 }} color="secondary" label="Username" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <TextField {...getFieldProps('username')}
+                            color="secondary" label="Username" variant="outlined" fullWidth
+                            error={Boolean(touched.username && errors.username)}
+                            helperText={touched.username && errors.username} />
                     </div>
                     <div className="mb-4">
-                        <TextField type="password" value={password} onChange={updatePassword} inputProps={{ minLength: 5 }} color="secondary" label="Password" variant="outlined" fullWidth required style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }} />
+                        <FormControl variant="outlined" fullWidth>
+                            <InputLabel color="secondary" error={Boolean(touched.password && errors.password)} htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-password"
+                                color="secondary"
+                                type={showPassword ? 'text' : 'password'}
+                                {...getFieldProps('password')}
+                                error={Boolean(touched.password && errors.password)}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Password" />
+                                <FormHelperText error={Boolean(touched.password && errors.password)} id="outlined-weight-helper-text">{touched.password && errors.password}</FormHelperText>
+                        </FormControl>
                     </div>
-                    <Button disabled={username.length < 3 || password.length < 5 || username.length > 25 } type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Login</Button>
+                    <Button type="submit" fullWidth size="large" className="mb-4" variant="contained" color="secondary" style={{ textTransform: "none", fontFamily: "'Poppins', sans-serif", fontSize: "1.1rem" }}>Login</Button>
                 </form>
                 <p>Don't have an account? <Link to="/register" >register</Link> </p>
             </div>
