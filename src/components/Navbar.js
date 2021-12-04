@@ -18,7 +18,7 @@ function Navbar() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light " style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px", }}>
+        <nav className="navbar navbar-expand-lg navbar-light ">
             <div className="container-fluid">
                 <NavLink activeclassname="active" className="navbar-brand" to="/">iNotebook</NavLink>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,8 +1,10 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-}
+require('dotenv').config()
+const crypto = require('crypto')
+
 const User = require('../models/User')
 const jwt = require('jsonwebtoken');
+const ExpressError = require('../utils/ExpressError');
+const sendEmail = require('../utils/sendEmail');
 
 
 module.exports.createUser = async (req, res) => {
@@ -10,10 +12,10 @@ module.exports.createUser = async (req, res) => {
     const user = new User({ username, email, password })
     const resp = await user.save()
     const data = {
-        user: { id: resp._id }
+        user: { id: user._id }
     }
-    const authToken = jwt.sign(data, process.env.JWT_KEY)
-    res.send({ success: true, authToken })
+    const authToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRY })
+    res.status(201).json({ success: true, user: resp, authToken })
 }
 
 module.exports.loginUser = async (req, res) => {
@@ -23,15 +25,62 @@ module.exports.loginUser = async (req, res) => {
         const data = {
             user: { id: foundUser._id }
         }
-        const authToken = jwt.sign(data, process.env.JWT_KEY)
-        res.send({ success: true, authToken })
+        const authToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRY })
+        res.status(201).json({ success: true, authToken })
     } else {
-        return res.status(400).json({ success: false, err: { user: foundUser }, message: "invalid credentials !!" })
+        throw new ExpressError("invalid credentials !!", 400)
     }
 }
 
 module.exports.getUser = async (req, res) => {
     const userId = req.user.id
     const user = await User.findById(userId).select("-password")
-    res.send(user)
+    res.status(201).json(user)
+}
+
+module.exports.forgotPassword = async (req, res, next) => {
+    const { email } = req.body
+    const user = await User.findOne({ email })
+    if (!user) {
+        throw new ExpressError("Email Could be Sent , Please register first", 404)
+    }
+    const resetToken = await user.getResetPasswordToken()
+    console.log(resetToken)
+    await user.save()
+    const resetUrl = `http://localhost:3000/passwordReset/${resetToken}`
+    const message = `
+    <h1>You have requested for password reset</h1>
+    <p>pls go to this link to reset your password</p>
+    <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+    `
+    try {
+        await sendEmail({
+            to: user.email,
+            subject: "Password rest request",
+            text: message
+        })
+    } catch (error) {
+        user.resetPasswordToken = undefined
+        user.resetPasswordExpire = undefined
+        await user.save()
+        return next(new ExpressError("Email could not be sent", 500))
+    }
+
+    res.status(201).json({ success: true, message: "Email sent successfully" })
+}
+
+module.exports.resetPassword = async (req, res, next) => {
+    const resetPasswordToken = crypto.createHash("sha256").update(req.params.resetToken).digest("hex")
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() }
+    })
+    if (!user) {
+        throw new ExpressError("Invalid Token", 404)
+    }
+    user.password = req.body.password
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpire = undefined
+    await user.save()
+    res.status(201).json({ success: true, message: "Password Reset Success" })
 }

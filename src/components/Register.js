@@ -49,9 +49,7 @@ function Register() {
             const json = await response.json()
             console.log(json)
             if (json.success) {
-                localStorage.setItem("token", json.authToken)
-                navigate("/")
-                showAlert(`Welcome to iNotebook ${values.username}`, "success")
+                navigate("/login")
             } else {
                 showAlert(json.message, "error")
             }

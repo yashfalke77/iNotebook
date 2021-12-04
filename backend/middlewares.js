@@ -1,6 +1,5 @@
-if(process.env.NODE_ENV !== 'production'){
-    require('dotenv').config()
-}
+require('dotenv').config()
+
 const jwt = require('jsonwebtoken');
 const {userSchema, userSchemaLogin, newNoteSchema} = require('./joiSchema')
 const ExpressError = require('./utils/ExpressError')
@@ -9,7 +8,6 @@ module.exports.validateUserRegister = (req, res, next) => {
     const { error } = userSchema.validate(req.body)
     if (error) {
         const msg = error.details.map(el => el.message).join(', ')
-        console.log(msg);
         throw new ExpressError(msg, 400)
     } else {
         next()
@@ -20,7 +18,6 @@ module.exports.validateUserLogin = (req, res, next) => {
     const { error } = userSchemaLogin.validate(req.body)
     if (error) {
         const msg = error.details.map(el => el.message).join(', ')
-        console.log(msg);
         throw new ExpressError(msg, 400)
     } else {
         next()
@@ -31,7 +28,7 @@ module.exports.fetchUser = (req, res, next) => {
     // Get user from jwt token and add id to req object
     const token = req.header('auth-token')
     if (token) {
-        const data = jwt.verify(token, process.env.JWT_KEY)
+        const data = jwt.verify(token, process.env.JWT_SECRET)
         req.user = data.user
         next()
     } else {

@@ -15,6 +15,7 @@ function Notes() {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             getNotes()
+            console.log(notes)
         } else {
             navigate('/about')
             showAlert("You need to signed in first", "error")
@@ -31,9 +32,9 @@ function Notes() {
                 <img className="img-fluid ms-5 mt-3" src={empty} alt="empty" style={{width: "30%", opacity: "0.5"}} />
             </div>
             }
-            {notes.map(note => (
+            {notes.map(note => 
                 <NoteItem key={note._id} note={note} />
-            ))}
+            )}
         </div>
     )
 }

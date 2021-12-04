@@ -36,11 +36,9 @@ app.use('/api/notes', notesRoute)
 
 // error handling middleware
 app.use((err, req, res, next) => {
-    const {statusCode = 500, message} = err
-    if (!err.message) {
-        err.message = 'Something went wrong'
-    }
-    res.status(statusCode).json({success: false,err, message})
+    const { statusCode = 500 } = err
+    if (!err.message) err.message = 'Something went wrong'
+    res.status(statusCode).json({success: false, message: err.message}); //For development
 })
 
 const port = process.env.PORT || 8080
