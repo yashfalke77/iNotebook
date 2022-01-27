@@ -1,4 +1,6 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 const crypto = require('crypto')
 
 const User = require('../models/User')
@@ -14,7 +16,8 @@ module.exports.createUser = async (req, res) => {
     const data = {
         user: { id: user._id }
     }
-    const authToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRY })
+    console.log(process.env.SECRET);
+    const authToken = jwt.sign(data, 'b0742345623214e7f5aac75a4200799d80b55d26a62b97cd23015c33ae3ac11513e2e7', { expiresIn: 600 })
     res.status(201).json({ success: true, user: resp, authToken })
 }
 
@@ -25,7 +28,7 @@ module.exports.loginUser = async (req, res) => {
         const data = {
             user: { id: foundUser._id }
         }
-        const authToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRY })
+        const authToken = jwt.sign(data, 'b0742345623214e7f5aac75a4200799d80b55d26a62b97cd23015c33ae3ac11513e2e7', { expiresIn: 600 })
         res.status(201).json({ success: true, authToken })
     } else {
         throw new ExpressError("invalid credentials !!", 400)

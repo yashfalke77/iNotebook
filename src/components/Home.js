@@ -8,7 +8,7 @@ import Navbar from "./Navbar";
 import Alertss from "./Alertss";
 
 function Home() {
-
+    console.log('hii')
 
     return (
         <>
